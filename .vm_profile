@@ -99,7 +99,7 @@ rn () {										# Rename files in terminal
 }
 alias pip='pip3' #preferred pip
 py () {
-	python "$@"
+	python3.4 "$@"
 }
 alias ip='ifconfig | grep "inet " | grep -v 127.0.0.1'
 alias mv='mv -iv'                           # Preferred 'mv' implementation
@@ -165,6 +165,13 @@ alias herr='tail /var/log/httpd/error_log'              # herr:             Tail
 alias apacheLogs="less +F /var/log/apache2/error_log"   # Apachelogs:   Shows apache error logs
 httpHeaders () { /usr/bin/curl -I -L $@ ; }             # httpHeaders:      Grabs headers from web page
 
-#git
+# git
 
 gc () { git commit -am $@; }
+
+# virtualenvwrapper
+export WORKON_HOME=~/.virtualenvs
+if [ -e /usr/local/bin/virtualenvwrapper.sh ]
+then
+  source /usr/local/bin/virtualenvwrapper.sh
+fi
