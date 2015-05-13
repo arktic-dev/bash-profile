@@ -49,8 +49,20 @@ function parse_git_dirty() {
   [[ $(git status 2> /dev/null | tail -n1) != *"working directory clean"* ]]
 }
 
+# Determine active Python virtualenv details.
+function set_virtualenv () {
+  if test -z "$VIRTUAL_ENV" ; then
+    PYTHON_VIRTUALENV=""
+  else
+    PYTHON_VIRTUALENV="${BLUE}`basename \"$VIRTUAL_ENV\"`${COLOR_NONE} "
+  fi
+}
+
 # Set the full bash prompt.
 function set_bash_prompt () {
+  # Set the PYTHON_VIRTUALENV variable.
+  set_virtualenv
+
   # Set the BRANCH variable.
   if is_git_repository ; then
     set_git_branch
@@ -59,7 +71,7 @@ function set_bash_prompt () {
   fi
 
   # Set the bash prompt variable.
-  PS1="_______________________________________________________________________________________________________________\n| \t | \w @ \h \u ${YELLOW}${BRANCH}${COLOR_NONE} \n| => "
+  PS1="_______________________________________________________________________________________________________________\n| \t | \w @ \h \u ${PYTHON_VIRTUALENV}${YELLOW}${BRANCH}${COLOR_NONE} \n| => "
   PS2="| => "
 }
 
@@ -171,7 +183,7 @@ gc () { git commit -am $@; }
 
 # virtualenvwrapper
 export WORKON_HOME=~/.virtualenvs
-export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3.4 
+export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3.4
 if [ -e /usr/local/bin/virtualenvwrapper.sh ]
 then
   source /usr/local/bin/virtualenvwrapper.sh
